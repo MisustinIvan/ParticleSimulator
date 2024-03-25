@@ -1,7 +1,5 @@
 from abc import abstractmethod
-from types import FunctionType
 import pygame
-from pprint import pprint
 from typing import Callable
 
 pygame.init()
@@ -28,10 +26,10 @@ class Widget:
 
 class Button(Widget):
 
-    on_click: Callable[None, None] | None = None
+    on_click: Callable[[None], None] | None = None
 
     def __init__(
-        self, pos: pygame.Vector2, dimensions: pygame.Vector2, on_click: Callable[None, None]
+        self, pos: pygame.Vector2, dimensions: pygame.Vector2, on_click: Callable[[None], None]
     ) -> None:
         super().__init__(pos, dimensions)
         self.on_click = on_click
@@ -51,9 +49,6 @@ class App:
 
 
 def main():
-    a = App()
-
-
     button = Button(
         pos=pygame.Vector2(100, 100),
         dimensions=pygame.Vector2(100, 50),
