@@ -20,13 +20,22 @@ class Button(Widget):
         self.content = content
 
     def draw(self, surface: pygame.surface.Surface) -> None:
-        if self.is_clicked(0):
-            self.surface.fill((0, 0, 255))
+        # if self.is_clicked(0):
+        #     self.surface.fill((0, 0, 255))
+        # else:
+        #     if self.is_mouse_hover():
+        #         self.surface.fill((0, 255, 0))
+        #     else:
+        #         self.surface.fill((255, 0, 0))
+
+        # draw border
+        
+        if self.is_mouse_hover():
+            self.surface.fill((80, 80, 80))
         else:
-            if self.is_mouse_hover():
-                self.surface.fill((0, 255, 0))
-            else:
-                self.surface.fill((255, 0, 0))
+            self.surface.fill((20, 20, 20))
+        
+        pygame.draw.rect(self.surface, (255, 255, 255), (0, 0, self.dimensions.x, self.dimensions.y), 3)
 
         font = pygame.font.Font(None, 36)
         text = font.render(self.content, True, (255, 255, 255))
