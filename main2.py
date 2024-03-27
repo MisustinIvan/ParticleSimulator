@@ -1,8 +1,5 @@
-from abc import abstractmethod
 import sys
 import pygame
-from typing import Callable, Literal, Optional
-
 from button import Button
 
 pygame.init()
@@ -11,7 +8,6 @@ screen = pygame.display.set_mode((800, 600))
 
 
 class App:
-
     def __init__(self) -> None:
         pass
 
@@ -45,4 +41,3 @@ def main():
 
 
 main()
-
