@@ -1,6 +1,8 @@
-__pycache__/consts.cpython-311.pyc
-__pycache__/electron.cpython-311.pyc
-__pycache__/particle.cpython-311.pyc
-__pycache__/positron.cpython-311.pyc
-__pycache__/proton.cpython-311.pyc
-__pycache__/ui.cpython-311.pyc
+__pycache__/*
+bin/*
+include/*
+lib/*
+lib64/*
+share/*
+pyvenv.cfg
+lib64
