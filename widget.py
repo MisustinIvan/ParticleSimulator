@@ -10,7 +10,7 @@ class Widget(ABC):
     pos: pygame.Vector2
     dimensions: pygame.Vector2
     parent: "Widget | None"
-    children: list["Widget"] | None
+    children: list["Widget"]
 
     focus: bool = False
 
@@ -19,7 +19,7 @@ class Widget(ABC):
         pos: pygame.Vector2,
         dimensions: pygame.Vector2,
         parent: "Widget | None",
-        children: list["Widget"] | None,
+        children: list["Widget"],
     ) -> None:
         self.pos = pos
         self.dimensions = dimensions

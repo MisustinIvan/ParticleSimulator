@@ -8,24 +8,39 @@ from simulation import Simulation, SimulationWidget
 from style import Style
 from text_input import TextInput
 from electron import electron
+from positron import positron
+from proton import proton
 
 pygame.init()
 
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 (WIDTH, HEIGTH) = screen.get_size()
 
+clock = pygame.time.Clock()
+
 
 def main():
 
-    state = "test"
+    base_style = Style(
+        border_color=(255, 0, 0),
+        border_width=2,
+        border_radius=8,
+        background_color=(40, 40, 40),
+        background_secondary_color=(110, 110, 110),
+        text_color=(255, 255, 255),
+        font_size=56,
+        padding=(20, 20),
+    )
 
     root = Root(
-        pygame.Vector2(0, 0), pygame.Vector2(WIDTH, HEIGTH), None, None, "horizontal"
+        pygame.Vector2(0, 0), pygame.Vector2(WIDTH, HEIGTH), None, [], "horizontal"
     )
 
     sim = Simulation()
     sim.particles = [
-        electron(pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0))
+        electron(pygame.Vector2(0, 0), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+        electron(pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+        positron(pygame.Vector2(-100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
     ]
 
     def get_particles():
@@ -36,8 +51,51 @@ def main():
             pos=pygame.Vector2(0, 0),
             dimensions=pygame.Vector2(int(WIDTH * 0.7), HEIGTH),
             parent=root,
-            children=None,
+            children=[],
             get_particles=get_particles,
+        )
+    )
+
+    root.append(
+        Root(
+            pos=pygame.Vector2(0, 0),
+            dimensions=pygame.Vector2(WIDTH * 0.3, HEIGTH),
+            parent=root,
+            children=[],
+            direction="vertical",
+        )
+    )
+
+    root.children[1].append(
+        Button(
+            pygame.Vector2(0, 0),
+            pygame.Vector2(300, 100),
+            None,
+            sim.toggle_running,
+            "Pause",
+            style=base_style,
+        )
+    )
+
+    root.children[1].append(
+        Button(
+            pygame.Vector2(0, 0),
+            pygame.Vector2(300, 100),
+            None,
+            sim.toggle_running,
+            "Pause",
+            style=base_style,
+        )
+    )
+
+    root.children[1].append(
+        Button(
+            pygame.Vector2(0, 0),
+            pygame.Vector2(300, 100),
+            None,
+            sim.toggle_running,
+            "Pause",
+            style=base_style,
         )
     )
 
@@ -55,11 +113,14 @@ def main():
 
             root.handle_event(event)
 
+        sim.update()
+
         screen.fill((0, 0, 0))
 
         root.draw(screen)
 
         pygame.display.flip()
+        clock.tick(60)
 
 
 main()

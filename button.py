@@ -19,7 +19,7 @@ class Button(Widget):
         label: str,
         style: Style,
     ) -> None:
-        super().__init__(pos, dimensions, parent, None)
+        super().__init__(pos, dimensions, parent, [])
         self.on_click = on_click
         self.label = label
         self.style = style
@@ -68,5 +68,4 @@ class Button(Widget):
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if self.is_mouse_over() and event.type == pygame.MOUSEBUTTONDOWN:
-            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_HAND)
             self.on_click()

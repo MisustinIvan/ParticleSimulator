@@ -24,7 +24,7 @@ class TextInput(Widget):
         get_content: Callable[[], str],
         set_content: Callable[[str], None],
     ) -> None:
-        super().__init__(pos, dimensions, parent, children)
+        super().__init__(pos, dimensions, parent)
         self.style = style
         self.on_submit = on_submit
         self.get_content = get_content

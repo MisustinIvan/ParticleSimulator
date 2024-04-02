@@ -11,7 +11,7 @@ class Root(Widget):
         pos: pygame.Vector2,
         dimensions: pygame.Vector2,
         parent: "Widget | None",
-        children: list["Widget"] | None,
+        children: list["Widget"],
         direction: Literal["vertical", "horizontal"],
     ) -> None:
         super().__init__(pos, dimensions, parent, children)
@@ -27,19 +27,18 @@ class Root(Widget):
         )
         surface.blit(self.surface, self.pos)
 
-        if self.children is not None:
-            for child in self.children:
-                child.draw(surface)
+        for child in self.children:
+            child.draw(surface)
 
     def append(self, widget: "Widget") -> None:
-        if self.children is None:
+        if self.children == []:
             widget.pos = self.pos + widget.pos
             self.children = [widget]
         else:
             match self.direction:
                 case "vertical":
                     widget.pos = (
-                        pygame.Vector2(0, self.children[-1].pos.y)
+                        pygame.Vector2(self.pos.x, self.children[-1].pos.y)
                         + pygame.Vector2(0, self.children[-1].dimensions.y)
                         + widget.pos
                     )
@@ -52,6 +51,9 @@ class Root(Widget):
                     )
                     self.children.append(widget)
 
+    def num_children(self) -> int:
+        return len(self.children)
+
     def remove(self, widget: "Widget") -> None:
         pass
 
@@ -59,6 +61,5 @@ class Root(Widget):
         pass
 
     def handle_event(self, event: pygame.event.Event) -> None:
-        if self.children is not None:
-            for child in self.children:
-                child.handle_event(event)
+        for child in self.children:
+            child.handle_event(event)
