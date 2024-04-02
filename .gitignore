@@ -6,3 +6,4 @@ lib64/*
 share/*
 pyvenv.cfg
 lib64
+__pycache__/widget.cpython-312.pyc
