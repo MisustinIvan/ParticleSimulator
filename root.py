@@ -17,6 +17,9 @@ class Root(Widget):
         super().__init__(pos, dimensions, parent, children)
         self.direction = direction
 
+        for child in children:
+            self.append(child)
+
     def draw(self, surface: pygame.Surface) -> None:
         self.surface.fill((0, 0, 0))
         pygame.draw.rect(
@@ -42,6 +45,7 @@ class Root(Widget):
                         + pygame.Vector2(0, self.children[-1].dimensions.y)
                         + widget.pos
                     )
+
                     self.children.append(widget)
                 case "horizontal":
                     widget.pos = (

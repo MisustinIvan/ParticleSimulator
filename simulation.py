@@ -5,7 +5,6 @@ import pygame
 
 
 class Simulation:
-
     particles: list[particle]
     running: bool = True
 

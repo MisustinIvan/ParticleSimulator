@@ -5,7 +5,6 @@ from widget import Widget
 
 
 class Button(Widget):
-
     on_click: Callable[[], None]
     label: str
     style: Style
@@ -29,7 +28,12 @@ class Button(Widget):
             pygame.draw.rect(
                 self.surface,
                 self.style.background_secondary_color,
-                (0, 0, self.dimensions.x, self.dimensions.y),
+                (
+                    0,
+                    0,
+                    self.dimensions.x,
+                    self.dimensions.y,
+                ),
                 0,
                 self.style.border_radius,
             )
@@ -37,14 +41,24 @@ class Button(Widget):
             pygame.draw.rect(
                 self.surface,
                 self.style.background_color,
-                (0, 0, self.dimensions.x, self.dimensions.y),
+                (
+                    0,
+                    0,
+                    self.dimensions.x,
+                    self.dimensions.y,
+                ),
                 0,
                 self.style.border_radius,
             )
         pygame.draw.rect(
             self.surface,
             self.style.border_color,
-            (0, 0, self.dimensions.x, self.dimensions.y),
+                (
+                    0,
+                    0,
+                    self.dimensions.x,
+                    self.dimensions.y,
+                ),
             self.style.border_width,
             self.style.border_radius,
         )

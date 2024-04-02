@@ -20,7 +20,6 @@ clock = pygame.time.Clock()
 
 
 def main():
-
     base_style = Style(
         border_color=(255, 0, 0),
         border_width=2,
@@ -29,7 +28,6 @@ def main():
         background_secondary_color=(110, 110, 110),
         text_color=(255, 255, 255),
         font_size=56,
-        padding=(20, 20),
     )
 
     root = Root(
@@ -61,32 +59,41 @@ def main():
             pos=pygame.Vector2(0, 0),
             dimensions=pygame.Vector2(WIDTH * 0.3, HEIGTH),
             parent=root,
-            children=[],
+            children=[
+                Button(
+                    pos=pygame.Vector2(0, 0),
+                    dimensions=pygame.Vector2(400, 100),
+                    parent=None,
+                    on_click=sim.toggle_running,
+                    label="Toggle",
+                    style=base_style,
+                )
+            ],
             direction="vertical",
         )
     )
 
-    root.children[1].append(
-        Button(
-            pygame.Vector2(0, 0),
-            pygame.Vector2(300, 100),
-            None,
-            sim.toggle_running,
-            "Pause",
-            style=base_style,
-        )
-    )
+    # root.children[1].append(
+    #     Button(
+    #         pygame.Vector2(0, 0),
+    #         pygame.Vector2(300, 100),
+    #         None,
+    #         sim.toggle_running,
+    #         "Pause",
+    #         style=base_style,
+    #     )
+    # )
 
-    root.children[1].append(
-        Button(
-            pygame.Vector2(0, 0),
-            pygame.Vector2(300, 100),
-            None,
-            sim.toggle_running,
-            "Pause",
-            style=base_style,
-        )
-    )
+    # root.children[1].append(
+    #     Button(
+    #         pygame.Vector2(0, 0),
+    #         pygame.Vector2(300, 100),
+    #         None,
+    #         sim.toggle_running,
+    #         "Pause",
+    #         style=base_style,
+    #     )
+    # )
 
     root.children[1].append(
         Button(
