@@ -8,7 +8,6 @@ import pygame
 
 
 class Container(Widget):
-
     background_debug_color: Tuple[int, int, int]
 
     def __init__(
@@ -57,7 +56,6 @@ class Container(Widget):
 
 
 class VerticalSplit(Container):
-
     ratio: float
 
     def __init__(
@@ -80,7 +78,7 @@ class VerticalSplit(Container):
         if self.children == []:
             widget.pos += self.pos
             widget.dimensions = Vector2(
-                self.dimensions.x * 0.5,
+                self.dimensions.x * self.ratio,
                 self.dimensions.y,
             )
 
@@ -90,9 +88,56 @@ class VerticalSplit(Container):
 
         else:
             widget.pos += self.children[-1].pos + Vector2(
-                self.children[-1].dimensions.y, 0
+                self.children[-1].dimensions.x, 0
             )
-            widget.dimensions = Vector2(self.dimensions.x * 0.5, self.dimensions.y)
+            widget.dimensions = Vector2(
+                self.dimensions.x * (1 - self.ratio), self.dimensions.y
+            )
+            widget.surface = pygame.Surface(widget.dimensions)
+            self.children.append(widget)
+
+    def pop(self) -> None:
+        self.children = self.children[:-1]
+
+
+class HorizontalSplit(Container):
+    ratio: float
+
+    def __init__(
+        self,
+        pos: Union[Vector2, Tuple[int, int]],
+        dimensions: Union[Vector2, Tuple[int, int]],
+        parent: Widget | None,
+        children: Tuple[Widget, Widget],
+        background_debug_color: Tuple[int, int, int],
+        ratio: float,
+    ) -> None:
+        self.ratio = ratio
+        super().__init__(
+            pos, dimensions, parent, list(children), background_debug_color
+        )
+
+    def push(self, widget: Widget) -> None:
+        widget.parent = self
+
+        if self.children == []:
+            widget.pos += self.pos
+            widget.dimensions = Vector2(
+                self.dimensions.x,
+                self.dimensions.y * self.ratio,
+            )
+
+            widget.surface = pygame.Surface(widget.dimensions)
+
+            self.children.append(widget)
+
+        else:
+            widget.pos += self.children[-1].pos + Vector2(
+                0, self.children[-1].dimensions.y
+            )
+            widget.dimensions = Vector2(
+                self.dimensions.x, self.dimensions.y * (1 - self.ratio)
+            )
             widget.surface = pygame.Surface(widget.dimensions)
             self.children.append(widget)
 
@@ -116,12 +161,16 @@ class VerticalContainer(Container):
 
         if self.children == []:
             widget.pos += self.pos
+            widget.dimensions = Vector2(self.dimensions.x, widget.dimensions.y)
+            widget.surface = pygame.Surface(widget.dimensions)
             self.children.append(widget)
 
         else:
             widget.pos += self.children[-1].pos + Vector2(
                 0, self.children[-1].dimensions.y
             )
+            widget.dimensions = Vector2(self.dimensions.x, widget.dimensions.y)
+            widget.surface = pygame.Surface(widget.dimensions)
             self.children.append(widget)
 
     def pop(self) -> None:
@@ -141,14 +190,18 @@ class HorizontalContainer(Container):
 
     def push(self, widget: Widget) -> None:
         widget.parent = self
-
+        # horizontal maximizes in the y direction(grows to the sides, maximizes in the y direction)
         if self.children == []:
             widget.pos += self.pos
+            widget.dimensions = Vector2(widget.dimensions.x, self.dimensions.y)
+            widget.surface = pygame.Surface(widget.dimensions)
             self.children.append(widget)
         else:
             widget.pos += self.children[-1].pos + Vector2(
                 self.children[-1].dimensions.x, 0
             )
+            widget.dimensions = Vector2(widget.dimensions.x, self.dimensions.y)
+            widget.surface = pygame.Surface(widget.dimensions)
             self.children.append(widget)
 
     def pop(self) -> None:
@@ -156,32 +209,41 @@ class HorizontalContainer(Container):
 
 
 cnt = VerticalSplit(
-    (0, 0),
-    (400, 400),
-    None,
-    (
+    pos=(0, 0),
+    dimensions=(800, 800),
+    parent=None,
+    children=(
         VerticalContainer(
-            (0, 0),
-            (50, 500),
-            None,
-            [],
-            (255, 0, 0),
+            pos=(0, 0),
+            dimensions=(50, 500),
+            parent=None,
+            children=[],
+            background_debug_color=(255, 0, 0),
         ),
-        VerticalContainer(
-            (0, 0),
-            (50, 500),
-            None,
-            [],
-            (0, 255, 0),
+        HorizontalContainer(
+            pos=(0, 0),
+            dimensions=(50, 500),
+            parent=None,
+            children=[
+                VerticalContainer(
+                    pos=(0, 0),
+                    dimensions=(200, 200),
+                    parent=None,
+                    children=[],
+                    background_debug_color=(0, 0, 255),
+                )
+            ],
+            background_debug_color=(0, 255, 0),
         ),
     ),
-    (255, 255, 255),
+    background_debug_color=(255, 255, 255),
     ratio=0.5,
 )
 
-print(cnt.children[0].pos)
 print(cnt.children[1].pos)
 
+print(cnt.children[1].children[0].pos)
+print(cnt.children[1].children[0].dimensions)
 pygame.init()
 
 screen = pygame.display.set_mode((800, 800))
@@ -197,7 +259,7 @@ while True:
                 pygame.quit()
                 exit()
 
-    screen.fill((0, 0, 255))
+    screen.fill((0, 0, 0))
 
     cnt.draw(screen)
 
