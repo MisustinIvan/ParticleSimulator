@@ -1,4 +1,4 @@
-from Container import Container
+from container import Container
 from typing import Tuple, Union
 from widget import Widget
 

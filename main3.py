@@ -1,6 +1,6 @@
 from HorizontalContainer import HorizontalContainer
 from VerticalContainer import VerticalContainer
-from Container import Container
+from container import Container
 import pygame
 
 
