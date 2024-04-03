@@ -1,5 +1,5 @@
 from typing import Literal
-from widget import Widget
+from Widget import Widget
 import pygame
 
 

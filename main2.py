@@ -5,8 +5,8 @@ from root import Root
 from button import Button
 from simulation import Simulation, SimulationWidget
 from style import Style
-from electron import electron
-from positron import positron
+from old.electron import electron
+from old.positron import positron
 
 pygame.init()
 

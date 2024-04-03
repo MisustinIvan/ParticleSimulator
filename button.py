@@ -1,7 +1,7 @@
 from typing import Callable
 import pygame
 from style import Style
-from widget import Widget
+from Widget import Widget
 
 
 class Button(Widget):
@@ -53,12 +53,12 @@ class Button(Widget):
         pygame.draw.rect(
             self.surface,
             self.style.border_color,
-                (
-                    0,
-                    0,
-                    self.dimensions.x,
-                    self.dimensions.y,
-                ),
+            (
+                0,
+                0,
+                self.dimensions.x,
+                self.dimensions.y,
+            ),
             self.style.border_width,
             self.style.border_radius,
         )

@@ -1,11 +1,10 @@
 from typing import Tuple, Union
-from widget import Widget
+from Widget import Widget
 
 
 import pygame
 from pygame import Vector2
 from pygame.event import Event
-
 
 from abc import abstractmethod
 

@@ -1,6 +1,6 @@
 from typing import Callable
-from particle import particle
-from widget import Widget
+from old.particle import particle
+from Widget import Widget
 import pygame
 
 

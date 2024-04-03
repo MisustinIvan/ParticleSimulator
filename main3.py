@@ -1,8 +1,8 @@
+from turtle import update
 from HorizontalContainer import HorizontalContainer
 from VerticalContainer import VerticalContainer
-from container import Container
 import pygame
-
+from Widget import Widget
 
 (WIDTH, HEIGHT) = (1200, 800)
 
@@ -21,30 +21,54 @@ cnt = VerticalContainer(
                     dimensions=(WIDTH / 2, HEIGHT * 0.8),
                     parent=None,
                     children=[],
-                    background_debug_color=(200, 200, 100),
+                    background_debug_color=(255, 255, 100),
                 ),
                 VerticalContainer(
                     pos=(0, 0),
                     dimensions=(WIDTH / 2, HEIGHT * 0.8),
                     parent=None,
-                    children=[],
-                    background_debug_color=(100, 100, 200),
+                    children=[
+                        VerticalContainer(
+                            pos=(0, 0),
+                            dimensions=(WIDTH / 2, HEIGHT * 0.4),
+                            parent=None,
+                            children=[],
+                            background_debug_color=(100, 255, 100),
+                        ),
+                        #         # VerticalContainer(
+                        #         #     pos=(0, 0),
+                        #         #     dimensions=(WIDTH / 2, HEIGHT * 0.4),
+                        #         #     parent=None,
+                        #         #     children=[],
+                        #         #     background_debug_color=(100, 200, 200),
+                        #         # ),
+                    ],
+                    background_debug_color=(100, 100, 100),
                 ),
             ],
-            background_debug_color=(200, 100, 100),
+            background_debug_color=(100, 100, 100),
         ),
         HorizontalContainer(
             pos=(0, 0),
             dimensions=(WIDTH, HEIGHT * 0.2),
             parent=None,
             children=[],
-            background_debug_color=(100, 200, 100),
+            background_debug_color=(100, 255, 100),
         ),
     ],
     background_debug_color=(255, 255, 255),
 )
 
-print(isinstance(cnt, Container))
+
+def update_children_pos(widget: Widget) -> None:
+    for child in widget.children:
+        child.pos += widget.pos
+        update_children_pos(child)
+
+
+update_children_pos(cnt)
+
+print(cnt.children[0].children[1].children[0].pos)
 
 pygame.init()
 

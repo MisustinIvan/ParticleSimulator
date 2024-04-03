@@ -1,11 +1,10 @@
 from typing import Callable
 from style import Style
-from widget import Widget
+from Widget import Widget
 import pygame
 
 
 class NumberInput(Widget):
-
     content: str = ""
     style: Style
     on_submit: Callable[[], None]
@@ -33,7 +32,6 @@ class NumberInput(Widget):
         self.cursor_pos = len(self.content)
 
     def draw(self, surface: pygame.Surface) -> None:
-
         if self.focus:
             pygame.draw.rect(
                 self.surface,
@@ -81,7 +79,6 @@ class NumberInput(Widget):
         surface.blit(self.surface, self.pos)
 
     def handle_event(self, event: pygame.event.Event) -> None:
-
         match event.type:
             case pygame.MOUSEBUTTONDOWN:
                 match self.is_mouse_over():

@@ -1,6 +1,6 @@
-from container import Container
+from Container import Container
 from typing import Tuple, Union
-from widget import Widget
+from Widget import Widget
 
 
 from pygame import Vector2
@@ -20,20 +20,20 @@ class HorizontalContainer(Container):
     def push(self, widget: Widget) -> None:
         widget.parent = self
 
-        def update_children_pos(widget: Widget) -> None:
-            for child in widget.children:
-                child.pos += widget.pos
-                update_children_pos(child)
+        # def update_children_pos(widget: Widget) -> None:
+        #     for child in widget.children:
+        #         child.pos += widget.pos
+        #         update_children_pos(child)
 
         if self.children == []:
             widget.pos += self.pos
-            update_children_pos(widget)
+            # update_children_pos(widget)
             self.children.append(widget)
         else:
             widget.pos += Vector2(
                 self.children[-1].dimensions.x + self.children[-1].pos.x, 0
             )
-            update_children_pos(widget)
+            # update_children_pos(widget)
             self.children.append(widget)
 
     def pop(self) -> None:
