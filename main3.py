@@ -1,4 +1,3 @@
-from turtle import update
 from HorizontalContainer import HorizontalContainer
 from VerticalContainer import VerticalContainer
 import pygame
@@ -13,7 +12,7 @@ cnt = VerticalContainer(
     children=[
         HorizontalContainer(
             pos=(0, 0),
-            dimensions=(WIDTH, HEIGHT * 0.8),
+            dimensions=(WIDTH, int(HEIGHT * 0.8)),
             parent=None,
             children=[
                 VerticalContainer(
