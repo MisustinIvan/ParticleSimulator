@@ -1,31 +1,26 @@
 from typing import Tuple, Union
 from Widget import Widget
-
-
 import pygame
 from pygame import Vector2
 from pygame.event import Event
-
 from abc import abstractmethod
 
 
 class Container(Widget):
     background_debug_color: Tuple[int, int, int]
+    children: list[Widget]
 
     def __init__(
         self,
         pos: Union[Vector2, Tuple[int, int]],
         dimensions: Union[Vector2, Tuple[int, int]],
         parent: Widget | None,
-        children: list[Widget],
         background_debug_color: Tuple[int, int, int],
     ) -> None:
-        super().__init__(pos, dimensions, parent, [])
+        super().__init__(pos, dimensions, parent)
+        self.children = []
 
         self.background_debug_color = background_debug_color
-
-        for child in children:
-            self.push(child)
 
     def handle_event(self, event: Event) -> None:
         for child in self.children:
@@ -43,7 +38,8 @@ class Container(Widget):
     def draw(self, surface: pygame.Surface) -> None:
         self.surface.fill(self.background_debug_color)
         surface.blit(self.surface, self.pos)
-
+        if self.children == []:
+            return
         for child in self.children:
             child.draw(surface)
 
@@ -54,3 +50,7 @@ class Container(Widget):
     @abstractmethod
     def pop(self) -> None:
         print("[ERROR] pop method not implemented")
+
+    @abstractmethod
+    def recompute_layout(self) -> None:
+        print("[ERROR] recompute_layout method not implemented")

@@ -10,18 +10,15 @@ class Widget(ABC):
     pos: Vector2
     dimensions: Vector2
     parent: "Widget | None"
-    children: list["Widget"]
 
     def __init__(
         self,
         pos: Union[Vector2, Tuple[int, int]],
         dimensions: Union[Vector2, Tuple[int, int]],
         parent: "Widget | None",
-        children: list["Widget"],
     ) -> None:
         self.pos = Vector2(pos)
         self.parent = parent
-        self.children = children
         self.dimensions = Vector2(dimensions)
         self.surface = Surface((self.dimensions.x, self.dimensions.y))
 

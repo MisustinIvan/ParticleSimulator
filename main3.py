@@ -1,73 +1,28 @@
 from HorizontalContainer import HorizontalContainer
 from VerticalContainer import VerticalContainer
 import pygame
-from Widget import Widget
 
 (WIDTH, HEIGHT) = (1200, 800)
 
-cnt = VerticalContainer(
-    pos=(0, 0),
-    dimensions=(WIDTH, HEIGHT),
-    parent=None,
-    children=[
-        HorizontalContainer(
-            pos=(0, 0),
-            dimensions=(WIDTH, int(HEIGHT * 0.8)),
-            parent=None,
-            children=[
-                VerticalContainer(
-                    pos=(0, 0),
-                    dimensions=(WIDTH / 2, HEIGHT * 0.8),
-                    parent=None,
-                    children=[],
-                    background_debug_color=(255, 255, 100),
-                ),
-                VerticalContainer(
-                    pos=(0, 0),
-                    dimensions=(WIDTH / 2, HEIGHT * 0.8),
-                    parent=None,
-                    children=[
-                        VerticalContainer(
-                            pos=(0, 0),
-                            dimensions=(WIDTH / 2, HEIGHT * 0.4),
-                            parent=None,
-                            children=[],
-                            background_debug_color=(100, 255, 100),
-                        ),
-                        #         # VerticalContainer(
-                        #         #     pos=(0, 0),
-                        #         #     dimensions=(WIDTH / 2, HEIGHT * 0.4),
-                        #         #     parent=None,
-                        #         #     children=[],
-                        #         #     background_debug_color=(100, 200, 200),
-                        #         # ),
-                    ],
-                    background_debug_color=(100, 100, 100),
-                ),
-            ],
-            background_debug_color=(100, 100, 100),
-        ),
-        HorizontalContainer(
-            pos=(0, 0),
-            dimensions=(WIDTH, HEIGHT * 0.2),
-            parent=None,
-            children=[],
-            background_debug_color=(100, 255, 100),
-        ),
-    ],
-    background_debug_color=(255, 255, 255),
-)
+cnt = HorizontalContainer((0, 0), (WIDTH, HEIGHT), None, (255, 0, 0))
+
+main_window = HorizontalContainer((0, 0), (WIDTH - 400, HEIGHT), None, (0, 0, 255))
+main_window.push(VerticalContainer((0, 0), (300, 600), None, (255, 0, 255)))
+main_window.push(VerticalContainer((0, 0), (300, 600), None, (255, 120, 255)))
+
+side_menu = VerticalContainer((0, 0), (400, HEIGHT), None, (0, 255, 0))
 
 
-def update_children_pos(widget: Widget) -> None:
-    for child in widget.children:
-        child.pos += widget.pos
-        update_children_pos(child)
+side_menu.push(VerticalContainer((0, 0), (300, 300), None, (255, 0, 255)))
+side_menu.push(VerticalContainer((0, 0), (200, 100), None, (100, 100, 255)))
 
+side_menu.children[0].push(VerticalContainer((0, 0), (100, 100), None, (255, 255, 0)))
+side_menu.children[0].push(VerticalContainer((0, 0), (100, 100), None, (255, 255, 100)))
 
-update_children_pos(cnt)
+cnt.push(main_window)
+cnt.push(side_menu)
 
-print(cnt.children[0].children[1].children[0].pos)
+print(side_menu.pos)
 
 pygame.init()
 
