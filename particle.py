@@ -1,8 +1,9 @@
 from typing import Tuple
 import pygame
-
-from consts import EPSILON, ELECTRIC_PERMITTIVITY
 from math import pi
+
+ELECTRIC_PERMITTIVITY: float = 8.854e-12
+EPSILON: float = 1e-6
 
 
 class particle:

@@ -1,21 +1,19 @@
 from pygame import Vector2
-from style import Tuple
 from Widget import Widget
-from typing import Callable
+from typing import Callable, Tuple
 from abc import abstractmethod
 import pygame
 
 
 class Clickable(Widget):
-
-    on_click : "Callable[[Clickable], None]"
+    on_click: "Callable[[Clickable], None]"
 
     def __init__(
         self,
         pos: Vector2 | Tuple[int, int],
         dimensions: Vector2 | Tuple[int, int],
         parent: Widget | None,
-        on_click : "Callable[[Clickable], None]"
+        on_click: "Callable[[Clickable], None]",
     ) -> None:
         super().__init__(pos, dimensions, parent)
         self.on_click = on_click
@@ -33,5 +31,5 @@ class Clickable(Widget):
         pass
 
     @abstractmethod
-    def draw(self, surface : pygame.Surface) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
         pass

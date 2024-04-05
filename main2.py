@@ -5,7 +5,7 @@ from root import Root
 from button import Button
 from simulation import Simulation, SimulationWidget
 from style import Style
-from old.electron import electron
+from electron import electron
 from old.positron import positron
 
 pygame.init()

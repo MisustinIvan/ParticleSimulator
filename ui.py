@@ -1,5 +1,5 @@
 from typing import Dict, List
-from old.particle import particle
+from particle import particle
 import pygame
 
 

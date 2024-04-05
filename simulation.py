@@ -1,5 +1,6 @@
-from typing import Callable
-from old.particle import particle
+from typing import Callable, Tuple
+
+from particle import particle
 from Widget import Widget
 import pygame
 
@@ -38,44 +39,38 @@ class Simulation:
 
 
 class SimulationWidget(Widget):
+    get_particles: Callable[[], list[particle]]
+
     def __init__(
         self,
-        pos: pygame.Vector2,
-        dimensions: pygame.Vector2,
-        parent: "Widget | None",
-        children: list["Widget"],
+        pos: pygame.Vector2 | Tuple[int],
+        dimensions: pygame.Vector2 | Tuple[int],
+        parent: Widget | None,
         get_particles: Callable[[], list[particle]],
     ) -> None:
-        super().__init__(pos, dimensions, parent, children)
+        super().__init__(pos, dimensions, parent)
+
         self.get_particles = get_particles
-        self.surface = pygame.Surface((int(dimensions.x), int(dimensions.y)))
 
     def draw(self, surface: pygame.Surface) -> None:
-        self.surface.fill((0, 0, 0))
+        self.surface.fill((0, 0, 0, 255))
 
         for p in self.get_particles():
             pygame.draw.circle(
                 self.surface,
-                p.draw_color,
-                p.pos + self.dimensions / 2,
-                p.draw_radius,
+                (255, 255, 255),
+                (int(p.pos.x), int(p.pos.y)),
+                8,
             )
 
-        pygame.draw.rect(self.surface, (255, 255, 255), (0, 0, *self.dimensions), 2)
-
         surface.blit(self.surface, self.pos)
-
-    def update(self) -> None:
-        pass
 
     def handle_event(self, event: pygame.event.Event) -> None:
         pass
 
-    def on_click(self) -> None:
-        pass
-
-    def append(self, widget: "Widget") -> None:
-        pass
-
-    def remove(self, widget: "Widget") -> None:
-        pass
+    def is_mouse_over(self) -> bool:
+        mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
+        return (
+            self.pos.x < mouse_pos[0] < self.pos.x + self.dimensions.x
+            and self.pos.y < mouse_pos[1] < self.pos.y + self.dimensions.y
+        )

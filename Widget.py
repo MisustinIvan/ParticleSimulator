@@ -1,8 +1,6 @@
-from typing import Union
+from typing import Union, Tuple
 from pygame import Vector2, Surface, event
 from abc import ABC, abstractmethod
-
-from style import Tuple
 
 
 class Widget(ABC):
@@ -20,7 +18,7 @@ class Widget(ABC):
         self.pos = Vector2(pos)
         self.parent = parent
         self.dimensions = Vector2(dimensions)
-        self.surface = Surface((self.dimensions.x, self.dimensions.y))
+        self.surface = Surface((self.dimensions.x, self.dimensions.y)).convert_alpha()
 
     @abstractmethod
     def handle_event(self, event: event.Event) -> None:
