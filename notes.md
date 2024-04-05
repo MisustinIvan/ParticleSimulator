@@ -8,6 +8,8 @@ everything in append happens in relation to the component being appended to
 
 # idea vomit 2 *optimalization*
 
+*readability* -> take a look at output of pylint in github actions <https://github.com/MisustinIvan/ParticleSimulator/actions>
+
 call to c functions to calculate shit <https://www.digitalocean.com/community/tutorials/calling-c-functions-from-python>
 
 use mojo <https://docs.modular.com/mojo>
