@@ -17,15 +17,7 @@ class Button(Clickable):
         parent: Widget | None,
         on_click: Callable[[Clickable], None],
         label: str,
-        style: Style = Style(
-            text_size=40,
-            text_color=(255, 255, 255),
-            background_color=(80, 80, 120),
-            background_secondary_color=(120, 120, 180),
-            border_color=(255, 255, 255),
-            border_width=5,
-            border_radius=10,
-        ),
+        style: Style,
     ) -> None:
         super().__init__(pos, dimensions, parent, on_click)
 
