@@ -30,9 +30,10 @@ class HorizontalContainer(Container):
 
         # God lent me his infinite wisdom during the creation of this recursive sin
         def update_children_pos(widget: Widget) -> None:
-            for child in widget.children:
-                child.pos += widget.pos
-                update_children_pos(child)
+            if "children" in dir(widget):
+                for child in widget.children:
+                    child.pos += widget.pos
+                    update_children_pos(child)
 
         update_children_pos(widget)
 

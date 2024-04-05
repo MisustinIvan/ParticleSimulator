@@ -26,6 +26,16 @@ class VerticalContainer(Container):
             widget.pos += Vector2(
                 0, self.children[-1].dimensions.y + self.children[-1].pos.y
             )
+
+        # God lent me his infinite wisdom during the creation of this recursive sin
+        def update_children_pos(widget: Widget) -> None:
+            if "children" in dir(widget):
+                for child in widget.children:
+                    child.pos += widget.pos
+                    update_children_pos(child)
+
+        update_children_pos(widget)
+
         self.children.append(widget)
 
     def pop(self) -> None:

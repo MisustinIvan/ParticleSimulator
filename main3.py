@@ -1,6 +1,7 @@
 from HorizontalContainer import HorizontalContainer
 from VerticalContainer import VerticalContainer
 import pygame
+from Clickable import Clickable
 
 (WIDTH, HEIGHT) = (1200, 800)
 
@@ -8,7 +9,10 @@ cnt = HorizontalContainer((0, 0), (WIDTH, HEIGHT), None, (255, 0, 0))
 
 main_window = HorizontalContainer((0, 0), (WIDTH - 400, HEIGHT), None, (0, 0, 255))
 main_window.push(VerticalContainer((0, 0), (300, 600), None, (255, 0, 255)))
-main_window.push(VerticalContainer((0, 0), (300, 600), None, (255, 120, 255)))
+main_window.push(Clickable((0, 0), (300, 200), None, lambda : print("hello, world!")))
+main_window.push(Clickable((0, 0), (300, 200), None, lambda : print("hello, world!")))
+
+
 
 side_menu = VerticalContainer((0, 0), (400, HEIGHT), None, (0, 255, 0))
 
@@ -38,6 +42,8 @@ while True:
             if event.key == pygame.K_q:
                 pygame.quit()
                 exit()
+
+        cnt.handle_event(event)
 
     screen.fill((0, 0, 0))
 
