@@ -1,9 +1,10 @@
+import sys
 from DynamicLabel import DynamicLabel
 from HorizontalContainer import HorizontalContainer
 from Label import Label
 from VerticalContainer import VerticalContainer
 import pygame
-from Button import Button
+from button import Button
 from Style import Style
 from electron import electron
 from simulation import Simulation, SimulationWidget
@@ -88,7 +89,7 @@ side_menu.push(
 
 def exit():
     pygame.quit()
-    exit(0)
+    sys.exit(0)
 
 
 side_menu.push(
