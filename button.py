@@ -1,85 +1,27 @@
-from typing import Callable
+from Clickable import Clickable
+from pygame import Vector2
 import pygame
-from style import Style
+from typing import Tuple, Callable
 from Widget import Widget
 
 
-class Button(Widget):
-    on_click: Callable[[], None]
-    label: str
-    style: Style
-
+class Button(Clickable):
     def __init__(
         self,
-        pos: pygame.Vector2,
-        dimensions: pygame.Vector2,
-        parent: "Widget | None",
-        on_click: Callable[[], None],
-        label: str,
-        style: Style,
+        pos: Vector2 | Tuple[int, int],
+        dimensions: Vector2 | Tuple[int, int],
+        parent: Widget | None,
+        on_click: Callable[[Clickable], None]
     ) -> None:
-        super().__init__(pos, dimensions, parent, [])
-        self.on_click = on_click
-        self.label = label
-        self.style = style
+        super().__init__(pos, dimensions, parent, on_click)
 
-    def draw(self, surface: pygame.Surface) -> None:
-        if self.is_mouse_over():
-            pygame.draw.rect(
-                self.surface,
-                self.style.background_secondary_color,
-                (
-                    0,
-                    0,
-                    self.dimensions.x,
-                    self.dimensions.y,
-                ),
-                0,
-                self.style.border_radius,
-            )
-        else:
-            pygame.draw.rect(
-                self.surface,
-                self.style.background_color,
-                (
-                    0,
-                    0,
-                    self.dimensions.x,
-                    self.dimensions.y,
-                ),
-                0,
-                self.style.border_radius,
-            )
-        pygame.draw.rect(
-            self.surface,
-            self.style.border_color,
-            (
-                0,
-                0,
-                self.dimensions.x,
-                self.dimensions.y,
-            ),
-            self.style.border_width,
-            self.style.border_radius,
-        )
 
-        font = pygame.font.Font(None, self.style.font_size)
-        text = font.render(self.label, True, self.style.text_color, None)
-        text_rect = text.get_rect()
-        text_rect.center = (int(self.dimensions.x / 2), int(self.dimensions.y / 2))
-        self.surface.blit(text, text_rect)
-
-        surface.blit(self.surface, self.pos)
-
-    def append(self, widget: "Widget") -> None:
+    def draw(self, surface : pygame.Surface) -> None:
         pass
 
-    def remove(self, widget: "Widget") -> None:
-        pass
+    def is_mouse_over(self) -> bool:
+        return True
 
-    def update(self) -> None:
-        pass
 
-    def handle_event(self, event: pygame.event.Event) -> None:
-        if self.is_mouse_over() and event.type == pygame.MOUSEBUTTONDOWN:
-            self.on_click()
+b = Button((0,0), (0,0), None, lambda b : print(b.pos))
+b.on_click(b)
