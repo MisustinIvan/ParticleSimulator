@@ -24,7 +24,7 @@ class Simulation:
     def toggle_running(self) -> None:
         self.running = not self.running
 
-    def update(self) -> None:
+    def update(self, delta_time: float) -> None:
         if self.running:
             for particle in self.particles:
                 f = pygame.Vector2(0, 0)
@@ -35,7 +35,7 @@ class Simulation:
 
             for particle in self.particles:
                 particle.vel += particle.acc
-                particle.pos += particle.vel
+                particle.pos += particle.vel * delta_time
 
 
 class SimulationWidget(Widget):

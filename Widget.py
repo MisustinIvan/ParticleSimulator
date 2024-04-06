@@ -2,12 +2,15 @@ from typing import Union, Tuple
 from pygame import Vector2, Surface, event
 from abc import ABC, abstractmethod
 
+import pygame
+
 
 class Widget(ABC):
     surface: Surface
     pos: Vector2
     dimensions: Vector2
     parent: "Widget | None"
+    accept_events: list[int]
 
     def __init__(
         self,

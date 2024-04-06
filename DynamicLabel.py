@@ -26,7 +26,8 @@ class DynamicLabel(Widget):
         self.get_label = get_label
 
     def draw(self, surface: pygame.Surface) -> None:
-        self.surface.fill((0, 0, 0, 0))
+        # self.surface.fill((0, 0, 0, 0))
+        self.surface.fill(self.style.background_color)
 
         font = pygame.font.Font(None, self.style.text_size)
         text = font.render(self.get_label(), True, self.style.text_color)

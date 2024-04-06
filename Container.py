@@ -9,6 +9,7 @@ from abc import abstractmethod
 class Container(Widget):
     background_debug_color: Tuple[int, int, int]
     children: list[Widget]
+    bg_drawn: bool
 
     def __init__(
         self,
@@ -21,6 +22,7 @@ class Container(Widget):
         self.children = []
 
         self.background_debug_color = background_debug_color
+        self.bg_drawn = False
 
     def handle_event(self, event: Event) -> None:
         for child in self.children:
@@ -36,8 +38,12 @@ class Container(Widget):
         )
 
     def draw(self, surface: pygame.Surface) -> None:
-        self.surface.fill(self.background_debug_color)
-        surface.blit(self.surface, self.pos)
+        if not self.bg_drawn:
+            self.surface.fill(self.background_debug_color)
+            surface.blit(self.surface, self.pos)
+            self.bg_drawn = True
+        # self.surface.fill(self.background_debug_color)
+        # surface.blit(self.surface, self.pos)
         if self.children == []:
             return
         for child in self.children:

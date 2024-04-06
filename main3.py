@@ -107,9 +107,14 @@ cnt.push(main_window)
 cnt.push(side_menu)
 
 clock = pygame.time.Clock()
+last_time = pygame.time.get_ticks()
+delta_time = 0
 
 while True:
+    # for event in pygame.event.get(exclude=(pygame.MOUSEMOTION,)):
     for event in pygame.event.get():
+        print(event)
+
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
@@ -121,11 +126,15 @@ while True:
 
         cnt.handle_event(event)
 
-    sim.update()
-    screen.fill((0, 0, 0))
+    now = pygame.time.get_ticks()
+    delta_time = now - last_time
+    last_time = now
+
+    sim.update(delta_time)
+    # screen.fill((0, 0, 0))
 
     cnt.draw(screen)
-    print(clock.get_fps())
+    # print(clock.get_fps())
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(120)

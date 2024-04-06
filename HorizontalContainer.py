@@ -22,7 +22,6 @@ class HorizontalContainer(Container):
 
         if self.children == []:
             widget.pos += self.pos
-
         else:
             widget.pos += Vector2(
                 self.children[-1].dimensions.x + self.children[-1].pos.x, 0
