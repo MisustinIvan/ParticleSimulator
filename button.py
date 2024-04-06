@@ -9,6 +9,7 @@ from Style import Style
 class Button(Clickable):
     style: Style
     label: str
+    drawn: bool
 
     def __init__(
         self,
@@ -21,42 +22,51 @@ class Button(Clickable):
     ) -> None:
         super().__init__(pos, dimensions, parent, on_click)
 
+        self.drawn = False
         self.style = style
         self.label = label
 
     def draw(self, surface: pygame.Surface) -> None:
-        self.surface.fill((0, 0, 0, 0))
-        if self.is_mouse_over():
+        if not self.drawn:
+            self.surface.fill((0, 0, 0, 0))
+            if self.is_mouse_over():
+                pygame.draw.rect(
+                    self.surface,
+                    self.style.background_secondary_color,
+                    (0, 0, self.dimensions.x, self.dimensions.y),
+                    0,
+                    self.style.border_radius,
+                )
+            else:
+                pygame.draw.rect(
+                    self.surface,
+                    self.style.background_color,
+                    (0, 0, self.dimensions.x, self.dimensions.y),
+                    0,
+                    self.style.border_radius,
+                )
+
+            font = pygame.font.Font(None, self.style.text_size)
+            text = font.render(self.label, True, self.style.text_color)
+            text_rect = text.get_rect(center=self.surface.get_rect().center)
+            self.surface.blit(text, text_rect)
+
             pygame.draw.rect(
                 self.surface,
-                self.style.background_secondary_color,
+                self.style.border_color,
                 (0, 0, self.dimensions.x, self.dimensions.y),
-                0,
-                self.style.border_radius,
-            )
-        else:
-            pygame.draw.rect(
-                self.surface,
-                self.style.background_color,
-                (0, 0, self.dimensions.x, self.dimensions.y),
-                0,
+                self.style.border_width,
                 self.style.border_radius,
             )
 
-        font = pygame.font.Font(None, self.style.text_size)
-        text = font.render(self.label, True, self.style.text_color)
-        text_rect = text.get_rect(center=self.surface.get_rect().center)
-        self.surface.blit(text, text_rect)
-
-        pygame.draw.rect(
-            self.surface,
-            self.style.border_color,
-            (0, 0, self.dimensions.x, self.dimensions.y),
-            self.style.border_width,
-            self.style.border_radius,
-        )
+            self.drawn = True
 
         surface.blit(self.surface, self.pos)
+
+    def handle_event(self, event) -> None:
+        if event.type == pygame.MOUSEMOTION:
+            self.drawn = False
+        super().handle_event(event)
 
     def is_mouse_over(self) -> bool:
         mouse_pos = Vector2(pygame.mouse.get_pos())

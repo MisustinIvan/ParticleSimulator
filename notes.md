@@ -14,6 +14,12 @@ call to c functions to calculate shit <https://www.digitalocean.com/community/tu
 
 use mojo <https://docs.modular.com/mojo>
 
-cache surfaces of components that dont have to be redrawn 
-
 send events only to components who want them
+
+
+
+# cache surfaces of components that dont have to be redrawn
+
+- static components -> labels for now -> DONE
+
+- dynamic components -> buttons -> dont redraw if mouse not moved

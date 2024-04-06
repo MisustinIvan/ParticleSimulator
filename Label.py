@@ -47,6 +47,7 @@ class Label(Widget):
                     text_rect.centery = self.surface.get_rect().centery
 
             self.surface.blit(text, text_rect)
+            self.drawn = True
 
         surface.blit(self.surface, self.pos)
 
