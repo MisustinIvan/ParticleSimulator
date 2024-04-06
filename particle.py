@@ -4,6 +4,7 @@ from math import pi
 
 ELECTRIC_PERMITTIVITY: float = 8.854e-12
 EPSILON: float = 1e-6
+EPSILON_vec2: pygame.Vector2 = pygame.Vector2(EPSILON, EPSILON)
 
 
 class particle:
@@ -30,15 +31,25 @@ class particle:
     # now we just have to describe the 4 basic interactions idk
     # electric interaction
     def electric_interaction(self, p: "particle") -> pygame.Vector2:
-        if self.pos.distance_to(p.pos) == 0:
-            return pygame.Vector2(0, 0)
+        # r = self.pos.distance_squared_to(p.pos)
+        # if r == 0:
+        #     return pygame.Vector2(0, 0)
 
+        # F = (self.electric_charge * p.electric_charge) / (
+        #     4 * pi * ELECTRIC_PERMITTIVITY * r + EPSILON
+        # )
+        # uv: pygame.Vector2 = (self.pos - p.pos).normalize()
+        # f: pygame.Vector2 = uv * F
+
+        diff = self.pos - p.pos
+        r = diff.magnitude()
+        if r == 0:
+            return pygame.Vector2(0, 0)
         F = (self.electric_charge * p.electric_charge) / (
-            4 * pi * ELECTRIC_PERMITTIVITY * self.pos.distance_squared_to(p.pos)
-            + EPSILON
+            4 * pi * ELECTRIC_PERMITTIVITY * r + EPSILON
         )
-        uv: pygame.Vector2 = (self.pos - p.pos).normalize()
-        f: pygame.Vector2 = uv * F
+        uv = diff / r
+        f = uv * F
 
         return f
 

@@ -34,3 +34,9 @@ send events only to components who want them
     -> 60% is spent drawing dynamic label
         -> 50% of that is pygame.font.Font.render
         -> 30% of that is the draw function itself
+
+
+# BARNES-HUT SIMULATION
+-> could be used to optimize for large amount of particles
+-> switch between two modes, for accurate small scale and fast large scale
+<https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation>
