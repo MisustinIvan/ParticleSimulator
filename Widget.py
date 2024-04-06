@@ -2,8 +2,6 @@ from typing import Union, Tuple
 from pygame import Vector2, Surface, event
 from abc import ABC, abstractmethod
 
-import pygame
-
 
 class Widget(ABC):
     surface: Surface
