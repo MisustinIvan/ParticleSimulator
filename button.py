@@ -27,6 +27,7 @@ class Button(Clickable):
         self.style = style
         self.label = label
         self.hover = False
+        self.font = pygame.font.Font(None, self.style.text_size)
 
     def draw(self, surface: pygame.Surface) -> None:
         if not self.drawn or self.is_mouse_over() != self.hover:
@@ -50,8 +51,7 @@ class Button(Clickable):
                     self.style.border_radius,
                 )
 
-            font = pygame.font.Font(None, self.style.text_size)
-            text = font.render(self.label, True, self.style.text_color)
+            text = self.font.render(self.label, True, self.style.text_color)
             text_rect = text.get_rect(center=self.surface.get_rect().center)
             self.surface.blit(text, text_rect)
 
