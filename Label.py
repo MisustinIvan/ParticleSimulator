@@ -10,6 +10,8 @@ class Label(Widget):
     style: Style
     align: Literal["left", "center", "right"]
 
+    drawn: bool
+
     def __init__(
         self,
         pos: Vector2 | Tuple[int, int],
@@ -24,25 +26,27 @@ class Label(Widget):
         self.align = align
         self.style = style
         self.label = label
+        self.drawn = False
 
     def draw(self, surface: pygame.Surface) -> None:
-        self.surface.fill((0, 0, 0, 0))
+        if not self.drawn:
+            self.surface.fill((0, 0, 0, 0))
 
-        font = pygame.font.Font(None, self.style.text_size)
-        text = font.render(self.label, True, self.style.text_color)
-        text_rect = text.get_rect()
+            font = pygame.font.Font(None, self.style.text_size)
+            text = font.render(self.label, True, self.style.text_color)
+            text_rect = text.get_rect()
 
-        match self.align:
-            case "left":
-                text_rect.left = 0
-                text_rect.centery = self.surface.get_rect().centery
-            case "center":
-                text_rect.center = self.surface.get_rect().center
-            case "right":
-                text_rect.right = self.surface.get_rect().right
-                text_rect.centery = self.surface.get_rect().centery
+            match self.align:
+                case "left":
+                    text_rect.left = 0
+                    text_rect.centery = self.surface.get_rect().centery
+                case "center":
+                    text_rect.center = self.surface.get_rect().center
+                case "right":
+                    text_rect.right = self.surface.get_rect().right
+                    text_rect.centery = self.surface.get_rect().centery
 
-        self.surface.blit(text, text_rect)
+            self.surface.blit(text, text_rect)
 
         surface.blit(self.surface, self.pos)
 
