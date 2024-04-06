@@ -10,6 +10,7 @@ class Button(Clickable):
     style: Style
     label: str
     drawn: bool
+    hover: bool
 
     def __init__(
         self,
@@ -25,9 +26,12 @@ class Button(Clickable):
         self.drawn = False
         self.style = style
         self.label = label
+        self.hover = False
 
     def draw(self, surface: pygame.Surface) -> None:
-        if not self.drawn:
+        if not self.drawn or self.is_mouse_over() != self.hover:
+            self.hover = self.is_mouse_over()
+
             self.surface.fill((0, 0, 0, 0))
             if self.is_mouse_over():
                 pygame.draw.rect(
@@ -64,7 +68,7 @@ class Button(Clickable):
         surface.blit(self.surface, self.pos)
 
     def handle_event(self, event) -> None:
-        if event.type == pygame.MOUSEMOTION:
+        if event.type == pygame.MOUSEMOTION and self.is_mouse_over():
             self.drawn = False
         super().handle_event(event)
 

@@ -24,13 +24,12 @@ class DynamicLabel(Widget):
         self.align = align
         self.style = style
         self.get_label = get_label
+        self.font = pygame.font.Font(None, self.style.text_size)
 
     def draw(self, surface: pygame.Surface) -> None:
         # self.surface.fill((0, 0, 0, 0))
         self.surface.fill(self.style.background_color)
-
-        font = pygame.font.Font(None, self.style.text_size)
-        text = font.render(self.get_label(), True, self.style.text_color)
+        text = self.font.render(self.get_label(), True, self.style.text_color)
         text_rect = text.get_rect()
 
         match self.align:

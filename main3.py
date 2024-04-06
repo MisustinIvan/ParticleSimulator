@@ -1,3 +1,6 @@
+import cProfile
+from calendar import c
+import pstats
 import sys
 from DynamicLabel import DynamicLabel
 from HorizontalContainer import HorizontalContainer
@@ -12,12 +15,12 @@ from simulation import Simulation, SimulationWidget
 pygame.init()
 
 
-sim = Simulation()
-sim.particles = [
-    electron(pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-    electron(pygame.Vector2(200, 200), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-    electron(pygame.Vector2(300, 300), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-]
+# sim = Simulation()
+# sim.particles = [
+#     electron(pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+#     electron(pygame.Vector2(200, 200), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+#     electron(pygame.Vector2(300, 300), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+# ]
 
 default_style = Style(
     text_size=36,
@@ -35,7 +38,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 cnt = HorizontalContainer((0, 0), (WIDTH, HEIGHT), None, (255, 0, 0))
 
-main_window = SimulationWidget((0, 0), (WIDTH - 400, HEIGHT), None, sim.get_particles)
+# main_window = SimulationWidget((0, 0), (WIDTH - 400, HEIGHT), None, sim.get_particles)
+main_window = SimulationWidget((0, 0), (WIDTH - 400, HEIGHT), None, lambda: [])
 
 side_menu = VerticalContainer((0, 0), (400, HEIGHT), None, (0, 255, 0))
 side_menu.push(
@@ -54,11 +58,8 @@ side_menu.push(
         pos=(0, 0),
         dimensions=(300, 100),
         parent=None,
-        on_click=lambda self: sim.particles.append(
-            electron(
-                pygame.Vector2(400, 400), pygame.Vector2(0, 0), pygame.Vector2(0, 0)
-            )
-        ),
+        # on_click=lambda self: sim.particles.append(
+        on_click=lambda self: print("clicked"),
         label="Add Particle",
         style=default_style,
     )
@@ -69,7 +70,8 @@ side_menu.push(
         pos=(0, 0),
         dimensions=(400, 50),
         parent=None,
-        get_label=lambda: f"Particles: {len(sim.particles)}",
+        # get_label=lambda: f"Particles: {len(sim.particles)}",
+        get_label=lambda: f"Particles",
         align="left",
         style=default_style,
     )
@@ -107,34 +109,49 @@ cnt.push(main_window)
 cnt.push(side_menu)
 
 clock = pygame.time.Clock()
-last_time = pygame.time.get_ticks()
-delta_time = 0
 
-while True:
-    # for event in pygame.event.get(exclude=(pygame.MOUSEMOTION,)):
-    for event in pygame.event.get():
-        print(event)
 
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
+def main():
+    last_time = pygame.time.get_ticks()
+    delta_time = 0
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
+    while True:
+        # for event in pygame.event.get(exclude=(pygame.MOUSEMOTION,)):
+        for event in pygame.event.get():
+            print(event)
+
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
 
-        cnt.handle_event(event)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    profiler.disable()
+                    stats = pstats.Stats(profiler)
+                    stats.dump_stats("profile.prof")
 
-    now = pygame.time.get_ticks()
-    delta_time = now - last_time
-    last_time = now
+                    pygame.quit()
+                    exit()
 
-    sim.update(delta_time)
-    # screen.fill((0, 0, 0))
+            cnt.handle_event(event)
 
-    cnt.draw(screen)
-    # print(clock.get_fps())
+        now = pygame.time.get_ticks()
+        delta_time = now - last_time
+        last_time = now
 
-    pygame.display.flip()
-    clock.tick(120)
+        # sim.update(delta_time)
+        # screen.fill((0, 0, 0))
+
+        cnt.draw(screen)
+        # print(clock.get_fps())
+
+        pygame.display.flip()
+        clock.tick(120)
+
+
+profiler = cProfile.Profile()
+profiler.enable()
+main()
+profiler.disable()
+stats = pstats.Stats(profiler)
+stats.dump_stats("profile.prof")

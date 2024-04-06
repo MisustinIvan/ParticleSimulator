@@ -26,3 +26,11 @@ send events only to components who want them
 - static components -> labels for now -> DONE
 
 - dynamic components -> buttons -> dont redraw if mouse not moved -> DONE
+
+
+# *optimization*
+
+-> profiler shows that half of time is spent drawing components
+    -> 60% is spent drawing dynamic label
+        -> 50% of that is pygame.font.Font.render
+        -> 30% of that is the draw function itself
