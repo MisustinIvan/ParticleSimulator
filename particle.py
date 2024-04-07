@@ -28,30 +28,17 @@ class particle:
         self.acc = a
         self.last_pos = p
 
-    # now we just have to describe the 4 basic interactions idk
-    # electric interaction
     def electric_interaction(self, p: "particle") -> pygame.Vector2:
-        # r = self.pos.distance_squared_to(p.pos)
-        # if r == 0:
-        #     return pygame.Vector2(0, 0)
-
-        # F = (self.electric_charge * p.electric_charge) / (
-        #     4 * pi * ELECTRIC_PERMITTIVITY * r + EPSILON
-        # )
-        # uv: pygame.Vector2 = (self.pos - p.pos).normalize()
-        # f: pygame.Vector2 = uv * F
-
-        diff = self.pos - p.pos
-        r = diff.magnitude()
+        r = self.pos.distance_squared_to(p.pos)
         if r == 0:
             return pygame.Vector2(0, 0)
+
         F = (self.electric_charge * p.electric_charge) / (
             4 * pi * ELECTRIC_PERMITTIVITY * r + EPSILON
         )
-        uv = diff / r
-        f = uv * F
-
-        return f
+        uv: pygame.Vector2 = self.pos - p.pos
+        uv.scale_to_length(F)
+        return uv
 
     def calculate_forces(self, p: "particle") -> pygame.Vector2:
         return self.electric_interaction(p)
