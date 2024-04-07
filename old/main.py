@@ -3,6 +3,10 @@ import pygame
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from ui import draw_menu, draw_spd, draw_cmd, draw_save_menu
+from electron import electron
+from positron import positron
+from proton import proton
+from particle import particle
 
 spd: int = 10
 
@@ -17,10 +21,6 @@ cmd: str = ""
 
 trace_mode: bool = False
 
-from electron import electron
-from positron import positron
-from proton import proton
-from particle import particle
 
 pygame.init()
 
@@ -163,8 +163,8 @@ def update_particles() -> None:
 
 def calculate_total_energy() -> float:
     sum: float = 0
-    for particle in particles:
-        e_k: float = (particle.mass * particle.vel.magnitude_squared()) / 2
+    for p in particles:
+        e_k: float = (particle.p * p.vel.magnitude_squared()) / 2
         sum += e_k
 
     return sum
@@ -185,7 +185,6 @@ def main() -> None:
                 sys.exit(0)
 
             if event.type == pygame.KEYDOWN:
-
                 if not cmd_mode:
                     if event.key == pygame.K_q:
                         pygame.quit()

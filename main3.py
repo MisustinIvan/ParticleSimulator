@@ -1,5 +1,4 @@
 import cProfile
-from calendar import c
 import pstats
 import sys
 from DynamicLabel import DynamicLabel
