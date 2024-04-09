@@ -6,14 +6,14 @@ import pygame
 
 
 class Clickable(Widget):
-    on_click: "Callable[[Clickable], None]"
+    on_click: "Callable[[], None]"
 
     def __init__(
         self,
         pos: Vector2 | Tuple[int, int],
         dimensions: Vector2 | Tuple[int, int],
         parent: Widget | None,
-        on_click: "Callable[[Clickable], None]",
+        on_click: "Callable[[], None]",
     ) -> None:
         super().__init__(pos, dimensions, parent)
         self.on_click = on_click
@@ -24,7 +24,7 @@ class Clickable(Widget):
             and self.is_mouse_over()
             and pygame.mouse.get_pressed(3)[0]
         ):
-            self.on_click(self)
+            self.on_click()
 
     @abstractmethod
     def is_mouse_over(self) -> bool:

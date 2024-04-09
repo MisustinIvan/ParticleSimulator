@@ -3,7 +3,7 @@ from pygame import Vector2
 import pygame
 from pygame.event import Event
 from Widget import Widget
-from Style import Style
+from style import Style
 
 
 class DynamicLabel(Widget):

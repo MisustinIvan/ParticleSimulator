@@ -8,9 +8,10 @@ import pygame
 class Simulation:
     particles: list[particle]
     running: bool = True
+    dimensions: pygame.Vector2
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, dimensions: pygame.Vector2) -> None:
+        self.dimensions = dimensions
 
     def get_particles(self) -> list[particle]:
         return self.particles
@@ -36,6 +37,13 @@ class Simulation:
             for particle in self.particles:
                 particle.vel += particle.acc
                 particle.pos += particle.vel * delta_time
+                if particle.pos.x < 0 or particle.pos.x > self.dimensions.x:
+                    particle.pos.x = max(1, min(particle.pos.x, self.dimensions.x - 1))
+                    particle.vel.x *= -1
+
+                if particle.pos.y < 0 or particle.pos.y > self.dimensions.y:
+                    particle.pos.y = max(1, min(particle.pos.y, self.dimensions.y - 1))
+                    particle.vel.y *= -1
 
 
 class SimulationWidget(Widget):
@@ -43,8 +51,8 @@ class SimulationWidget(Widget):
 
     def __init__(
         self,
-        pos: pygame.Vector2 | Tuple[int],
-        dimensions: pygame.Vector2 | Tuple[int],
+        pos: pygame.Vector2 | Tuple[int, int],
+        dimensions: pygame.Vector2 | Tuple[int, int],
         parent: Widget | None,
         get_particles: Callable[[], list[particle]],
     ) -> None:

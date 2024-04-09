@@ -3,7 +3,7 @@ from pygame import Vector2
 import pygame
 from typing import Tuple, Callable
 from Widget import Widget
-from Style import Style
+from style import Style
 
 
 class Button(Clickable):
@@ -17,7 +17,7 @@ class Button(Clickable):
         pos: Vector2 | Tuple[int, int],
         dimensions: Vector2 | Tuple[int, int],
         parent: Widget | None,
-        on_click: Callable[[Clickable], None],
+        on_click: Callable[[], None],
         label: str,
         style: Style,
     ) -> None:

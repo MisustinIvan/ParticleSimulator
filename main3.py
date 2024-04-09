@@ -4,22 +4,16 @@ import sys
 from DynamicLabel import DynamicLabel
 from HorizontalContainer import HorizontalContainer
 from Label import Label
+from TextInput import TextInput
 from VerticalContainer import VerticalContainer
 import pygame
 from button import Button
-from Style import Style
+from style import Style
 from electron import electron
 from simulation import Simulation, SimulationWidget
 
 pygame.init()
 
-
-sim = Simulation()
-sim.particles = [
-    electron(pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-    electron(pygame.Vector2(200, 200), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-    electron(pygame.Vector2(300, 300), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-]
 
 default_style = Style(
     text_size=36,
@@ -32,12 +26,20 @@ default_style = Style(
 )
 
 
+# (WIDTH, HEIGHT) = (2560, 1600)
 (WIDTH, HEIGHT) = (1200, 800)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 cnt = HorizontalContainer((0, 0), (WIDTH, HEIGHT), None, (255, 0, 0))
 
+sim = Simulation(pygame.Vector2(WIDTH - 400, HEIGHT))
+sim.particles = [
+    electron(pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+    electron(pygame.Vector2(200, 200), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+    electron(pygame.Vector2(300, 300), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+]
 main_window = SimulationWidget((0, 0), (WIDTH - 400, HEIGHT), None, sim.get_particles)
+
 # main_window = SimulationWidget((0, 0), (WIDTH - 400, HEIGHT), None, lambda: [])
 
 side_menu = VerticalContainer((0, 0), (400, HEIGHT), None, (0, 255, 0))
@@ -52,17 +54,75 @@ side_menu.push(
     )
 )
 
+partice_append_pos_x: int = 0
+partice_append_pos_y: int = 0
+
+
+def set_particle_append_pos_x(i: str):
+    global partice_append_pos_x
+    partice_append_pos_x = int(i)
+
+
+def set_particle_append_pos_y(i: str):
+    global partice_append_pos_y
+    partice_append_pos_y = int(i)
+
+
+side_menu.push(
+    Label(
+        pos=(0, 0),
+        dimensions=(400, 50),
+        parent=None,
+        label="X:",
+        align="left",
+        style=default_style,
+    )
+)
+
+side_menu.push(
+    TextInput(
+        pos=(0, 0),
+        dimensions=(400, 50),
+        parent=None,
+        style=default_style,
+        set_content=set_particle_append_pos_x,
+    )
+)
+
+
+side_menu.push(
+    Label(
+        pos=(0, 0),
+        dimensions=(400, 50),
+        parent=None,
+        label="Y:",
+        align="left",
+        style=default_style,
+    )
+)
+
+side_menu.push(
+    TextInput(
+        pos=(0, 0),
+        dimensions=(400, 50),
+        parent=None,
+        style=default_style,
+        set_content=set_particle_append_pos_y,
+    )
+)
+
 side_menu.push(
     Button(
         pos=(0, 0),
         dimensions=(300, 100),
         parent=None,
-        on_click=lambda self: sim.particles.append(
+        on_click=lambda: sim.particles.append(
             electron(
-                pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)
+                pygame.Vector2(partice_append_pos_x, partice_append_pos_y),
+                pygame.Vector2(0, 0),
+                pygame.Vector2(0, 0),
             )
         ),
-        # on_click=lambda self: print("clicked"),
         label="Add Particle",
         style=default_style,
     )
@@ -102,11 +162,12 @@ side_menu.push(
         pos=(0, 0),
         dimensions=(100, 40),
         parent=None,
-        on_click=lambda self: exit(),
+        on_click=exit,
         label="Exit",
         style=default_style,
     )
 )
+
 
 cnt.push(main_window)
 cnt.push(side_menu)
@@ -124,17 +185,12 @@ def main():
             # print(event)
 
             if event.type == pygame.QUIT:
+                profiler.disable()
+                stats = pstats.Stats(profiler)
+                stats.dump_stats("profile.prof")
+
                 pygame.quit()
                 exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
-                    profiler.disable()
-                    stats = pstats.Stats(profiler)
-                    stats.dump_stats("profile.prof")
-
-                    pygame.quit()
-                    exit()
 
             cnt.handle_event(event)
 

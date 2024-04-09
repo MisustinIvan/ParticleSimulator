@@ -3,7 +3,7 @@ from pygame import Vector2
 import pygame
 from pygame.event import Event
 from Widget import Widget
-from Style import Style
+from style import Style
 
 
 class Label(Widget):
@@ -30,8 +30,7 @@ class Label(Widget):
 
     def draw(self, surface: pygame.Surface) -> None:
         if not self.drawn:
-            self.surface.fill((0, 0, 0, 0))
-
+            self.surface.fill(self.style.background_color)
             font = pygame.font.Font(None, self.style.text_size)
             text = font.render(self.label, True, self.style.text_color)
             text_rect = text.get_rect()
