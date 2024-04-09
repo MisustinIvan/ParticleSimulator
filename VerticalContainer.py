@@ -24,7 +24,7 @@ class VerticalContainer(Container):
             widget.pos += self.pos
         else:
             widget.pos += Vector2(
-                0, self.children[-1].dimensions.y + self.children[-1].pos.y
+                self.pos.x, self.children[-1].dimensions.y + self.children[-1].pos.y
             )
 
         # God lent me his infinite wisdom during the creation of this recursive sin

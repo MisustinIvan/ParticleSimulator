@@ -1,6 +1,8 @@
-from typing import Tuple
+from typing import List, Tuple
 import pygame
 from math import pi
+
+from DynamicLabel import Literal
 
 ELECTRIC_PERMITTIVITY: float = 8.854e-12
 EPSILON: float = 1e-6
@@ -19,14 +21,23 @@ class particle:
     electric_charge: float
     spin: float
 
+    flags: List[Literal["static", "dynamic"]]
+
     draw_radius: int
     draw_color: Tuple[int, int, int]
 
-    def __init__(self, p: pygame.Vector2, v: pygame.Vector2, a: pygame.Vector2) -> None:
+    def __init__(
+        self,
+        p: pygame.Vector2,
+        v: pygame.Vector2,
+        a: pygame.Vector2,
+        flags: List[Literal["static", "dynamic"]],
+    ) -> None:
         self.pos = p
         self.vel = v
         self.acc = a
         self.last_pos = p
+        self.flags = flags
 
     def electric_interaction(self, p: "particle") -> pygame.Vector2:
         r = self.pos.distance_squared_to(p.pos)

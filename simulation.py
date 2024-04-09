@@ -28,6 +28,10 @@ class Simulation:
     def update(self, delta_time: float) -> None:
         if self.running:
             for particle in self.particles:
+
+                if "static" in particle.flags:
+                    continue
+
                 f = pygame.Vector2(0, 0)
                 for other in self.particles:
                     f += particle.calculate_forces(other)
@@ -64,10 +68,16 @@ class SimulationWidget(Widget):
         self.surface.fill((0, 0, 0, 255))
 
         for p in self.get_particles():
+
+            c: int = min(255, int(p.vel.magnitude() * 255) + 30)
+            color = (c, 0, 0)
+            if "static" in p.flags:
+                color = (255, 255, 255)
+
             pygame.draw.circle(
                 self.surface,
-                (255, 255, 255),
-                (int(p.pos.x), int(p.pos.y)),
+                color,
+                p.pos,
                 8,
             )
 

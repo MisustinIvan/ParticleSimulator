@@ -27,22 +27,26 @@ default_style = Style(
 
 
 # (WIDTH, HEIGHT) = (2560, 1600)
-(WIDTH, HEIGHT) = (1200, 800)
+(WIDTH, HEIGHT) = (2200, 1200)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-cnt = HorizontalContainer((0, 0), (WIDTH, HEIGHT), None, (255, 0, 0))
+cnt = HorizontalContainer((0, 0), (WIDTH, HEIGHT), None, default_style.background_color)
 
 sim = Simulation(pygame.Vector2(WIDTH - 400, HEIGHT))
 sim.particles = [
-    electron(pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-    electron(pygame.Vector2(200, 200), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
-    electron(pygame.Vector2(300, 300), pygame.Vector2(0, 0), pygame.Vector2(0, 0)),
+    electron(pygame.Vector2(300, 300), pygame.Vector2(0, 0), pygame.Vector2(0, 0), []),
+    electron(
+        pygame.Vector2(100, 100), pygame.Vector2(0, 0), pygame.Vector2(0, 0), ["static"]
+    ),
+    electron(pygame.Vector2(200, 200), pygame.Vector2(0, 0), pygame.Vector2(0, 0), []),
 ]
 main_window = SimulationWidget((0, 0), (WIDTH - 400, HEIGHT), None, sim.get_particles)
 
 # main_window = SimulationWidget((0, 0), (WIDTH - 400, HEIGHT), None, lambda: [])
 
-side_menu = VerticalContainer((0, 0), (400, HEIGHT), None, (0, 255, 0))
+side_menu = VerticalContainer(
+    (0, 0), (400, HEIGHT), None, default_style.background_color
+)
 side_menu.push(
     Label(
         pos=(0, 0),
@@ -121,6 +125,7 @@ side_menu.push(
                 pygame.Vector2(partice_append_pos_x, partice_append_pos_y),
                 pygame.Vector2(0, 0),
                 pygame.Vector2(0, 0),
+                [],
             )
         ),
         label="Add Particle",
@@ -152,6 +157,23 @@ side_menu.push(
 )
 
 
+# def get_first_particle_vel() -> float:
+#    return sim.particles[0].vel.magnitude()
+#
+#
+# side_menu.push(
+#    DynamicLabel(
+#        pos=(0, 0),
+#        dimensions=(400, 50),
+#        parent=None,
+#        get_label=lambda: f"First Particle Vel: {get_first_particle_vel()}",
+#        align="left",
+#        style=default_style,
+#    )
+# )
+#
+
+
 def exit():
     pygame.quit()
     sys.exit(0)
@@ -159,11 +181,58 @@ def exit():
 
 side_menu.push(
     Button(
-        pos=(0, 0),
-        dimensions=(100, 40),
+        pos=(10, 0),
+        dimensions=(200, 60),
         parent=None,
         on_click=exit,
         label="Exit",
+        style=default_style,
+    )
+)
+
+side_menu.push(
+    Button(
+        pos=(10, 10),
+        dimensions=(200, 60),
+        parent=None,
+        on_click=sim.toggle_running,
+        label="Pause",
+        style=default_style,
+    )
+)
+
+
+def add_magic():
+    side_menu.push(
+        Label(
+            pos=(0, 0),
+            dimensions=(400, 50),
+            parent=None,
+            label="Magic!",
+            align="left",
+            style=default_style,
+        )
+    )
+
+
+side_menu.push(
+    Button(
+        pos=(10, 10),
+        dimensions=(200, 60),
+        parent=None,
+        on_click=add_magic,
+        label="Secret",
+        style=default_style,
+    )
+)
+
+side_menu.push(
+    Button(
+        pos=(10, 10),
+        dimensions=(200, 60),
+        parent=None,
+        on_click=side_menu.pop,
+        label="Poof",
         style=default_style,
     )
 )
